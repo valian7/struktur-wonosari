@@ -1,0 +1,934 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="data/PolaRuangWonosari_1.js"></script>
+        <script src="data/TGL_Teloyo_2.js"></script>
+        <script src="data/TGL_Rencana_Teloyo_3.js"></script>
+        <script src="data/TGLTegalgondo_4.js"></script>
+        <script src="data/TGLTegalgondoRencana_5.js"></script>
+        <script src="data/PusatPelayananLingkungan_6.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+            highlightLayer.openPopup();
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        })
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
+        }
+        var layer_WebGIS_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 23
+        });
+        layer_WebGIS_0;
+        map.addLayer(layer_WebGIS_0);
+        function pop_PolaRuangWonosari_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">DESA</th>\
+                        <td>' + (feature.properties['DESA'] !== null ? Autolinker.link(feature.properties['DESA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">EXISTING</th>\
+                        <td>' + (feature.properties['EXISTING'] !== null ? Autolinker.link(feature.properties['EXISTING'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">RENCANA</th>\
+                        <td>' + (feature.properties['RENCANA'] !== null ? Autolinker.link(feature.properties['RENCANA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">AREA</th>\
+                        <td>' + (feature.properties['AREA'] !== null ? Autolinker.link(feature.properties['AREA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">KOTA_DESA</th>\
+                        <td>' + (feature.properties['KOTA_DESA'] !== null ? Autolinker.link(feature.properties['KOTA_DESA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_PolaRuangWonosari_1_0(feature) {
+            switch(String(feature.properties['EXISTING'])) {
+                case 'Gardu':
+                    return {
+                pane: 'pane_PolaRuangWonosari_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(131,217,38,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'INDUSTRI':
+                    return {
+                pane: 'pane_PolaRuangWonosari_1',
+                opacity: 1,
+                color: 'rgba(82,82,82,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(204,204,204,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'KORAMIL':
+                    return {
+                pane: 'pane_PolaRuangWonosari_1',
+                opacity: 1,
+                color: 'rgba(102,51,24,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(179,90,42,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'LAPANGAN':
+                    return {
+                pane: 'pane_PolaRuangWonosari_1',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(148,209,128,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'MAKAM':
+                    return {
+                pane: 'pane_PolaRuangWonosari_1',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(148,209,128,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'PERDAGANGAN':
+                    return {
+                pane: 'pane_PolaRuangWonosari_1',
+                opacity: 1,
+                color: 'rgba(128,14,16,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(228,26,28,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'PERMUKIMAN':
+                    return {
+                pane: 'pane_PolaRuangWonosari_1',
+                opacity: 1,
+                color: 'rgba(247,225,55,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,51,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'POLSEK':
+                    return {
+                pane: 'pane_PolaRuangWonosari_1',
+                opacity: 1,
+                color: 'rgba(102,51,24,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(179,90,42,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'RTH':
+                    return {
+                pane: 'pane_PolaRuangWonosari_1',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(148,209,128,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SAWAH IRIGASI':
+                    return {
+                pane: 'pane_PolaRuangWonosari_1',
+                opacity: 1,
+                color: 'rgba(56,128,54,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(77,175,74,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SAWAH TADAH HUJAN.':
+                    return {
+                pane: 'pane_PolaRuangWonosari_1',
+                opacity: 1,
+                color: 'rgba(21,14,166,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(77,175,74,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SEMPADAN SUNGAI':
+                    return {
+                pane: 'pane_PolaRuangWonosari_1',
+                opacity: 1,
+                color: 'rgba(100,152,210,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(165,191,221,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'TEGALAN':
+                    return {
+                pane: 'pane_PolaRuangWonosari_1',
+                opacity: 1,
+                color: 'rgba(247,225,55,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,51,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_PolaRuangWonosari_1');
+        map.getPane('pane_PolaRuangWonosari_1').style.zIndex = 401;
+        map.getPane('pane_PolaRuangWonosari_1').style['mix-blend-mode'] = 'normal';
+        var layer_PolaRuangWonosari_1 = new L.geoJson(json_PolaRuangWonosari_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_PolaRuangWonosari_1',
+            layerName: 'layer_PolaRuangWonosari_1',
+            pane: 'pane_PolaRuangWonosari_1',
+            onEachFeature: pop_PolaRuangWonosari_1,
+            style: style_PolaRuangWonosari_1_0,
+        });
+        bounds_group.addLayer(layer_PolaRuangWonosari_1);
+        map.addLayer(layer_PolaRuangWonosari_1);
+        function pop_TGL_Teloyo_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">DESA</th>\
+                        <td>' + (feature.properties['DESA'] !== null ? Autolinker.link(feature.properties['DESA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">EXISTING</th>\
+                        <td>' + (feature.properties['EXISTING'] !== null ? Autolinker.link(feature.properties['EXISTING'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">RENCANA</th>\
+                        <td>' + (feature.properties['RENCANA'] !== null ? Autolinker.link(feature.properties['RENCANA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">AREA</th>\
+                        <td>' + (feature.properties['AREA'] !== null ? Autolinker.link(feature.properties['AREA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_TGL_Teloyo_2_0(feature) {
+            switch(String(feature.properties['RENCANA'])) {
+                case 'INDUSTRI':
+                    return {
+                pane: 'pane_TGL_Teloyo_2',
+                opacity: 1,
+                color: 'rgba(82,82,82,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(204,204,204,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'PERMUKIMAN':
+                    return {
+                pane: 'pane_TGL_Teloyo_2',
+                opacity: 1,
+                color: 'rgba(247,225,55,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,51,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'PERTANIAN TANAMAN PANGAN':
+                    return {
+                pane: 'pane_TGL_Teloyo_2',
+                opacity: 1,
+                color: 'rgba(56,128,54,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(77,175,74,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'RTH':
+                    return {
+                pane: 'pane_TGL_Teloyo_2',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(148,209,128,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SEMPADAN SUNGAI':
+                    return {
+                pane: 'pane_TGL_Teloyo_2',
+                opacity: 1,
+                color: 'rgba(100,152,210,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(165,191,221,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_TGL_Teloyo_2');
+        map.getPane('pane_TGL_Teloyo_2').style.zIndex = 402;
+        map.getPane('pane_TGL_Teloyo_2').style['mix-blend-mode'] = 'normal';
+        var layer_TGL_Teloyo_2 = new L.geoJson(json_TGL_Teloyo_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_TGL_Teloyo_2',
+            layerName: 'layer_TGL_Teloyo_2',
+            pane: 'pane_TGL_Teloyo_2',
+            onEachFeature: pop_TGL_Teloyo_2,
+            style: style_TGL_Teloyo_2_0,
+        });
+        bounds_group.addLayer(layer_TGL_Teloyo_2);
+        map.addLayer(layer_TGL_Teloyo_2);
+        function pop_TGL_Rencana_Teloyo_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">TGL</th>\
+                        <td>' + (feature.properties['TGL'] !== null ? Autolinker.link(feature.properties['TGL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">2025</th>\
+                        <td>' + (feature.properties['2025'] !== null ? Autolinker.link(feature.properties['2025'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">2030</th>\
+                        <td>' + (feature.properties['2030'] !== null ? Autolinker.link(feature.properties['2030'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">2035</th>\
+                        <td>' + (feature.properties['2035'] !== null ? Autolinker.link(feature.properties['2035'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_TGL_Rencana_Teloyo_3_0(feature) {
+            switch(String(feature.properties['TGL'])) {
+                case 'Ibadat':
+                    return {
+                pane: 'pane_TGL_Rencana_Teloyo_3',
+                opacity: 1,
+                color: 'rgba(128,62,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,127,0,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Industri':
+                    return {
+                pane: 'pane_TGL_Rencana_Teloyo_3',
+                opacity: 1,
+                color: 'rgba(82,82,82,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(204,204,204,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Pasar':
+                    return {
+                pane: 'pane_TGL_Rencana_Teloyo_3',
+                opacity: 1,
+                color: 'rgba(128,14,16,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(228,26,28,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Pendidikan':
+                    return {
+                pane: 'pane_TGL_Rencana_Teloyo_3',
+                opacity: 1,
+                color: 'rgba(38,89,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(55,126,184,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Perdagangan':
+                    return {
+                pane: 'pane_TGL_Rencana_Teloyo_3',
+                opacity: 1,
+                color: 'rgba(128,14,16,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(228,26,28,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Perkim':
+                    return {
+                pane: 'pane_TGL_Rencana_Teloyo_3',
+                opacity: 1,
+                color: 'rgba(247,225,55,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,51,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'puskesmas':
+                    return {
+                pane: 'pane_TGL_Rencana_Teloyo_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(39,123,33,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'shelter':
+                    return {
+                pane: 'pane_TGL_Rencana_Teloyo_3',
+                opacity: 1,
+                color: 'rgba(119,61,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(152,78,163,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Taman':
+                    return {
+                pane: 'pane_TGL_Rencana_Teloyo_3',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(148,209,128,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'terminal':
+                    return {
+                pane: 'pane_TGL_Rencana_Teloyo_3',
+                opacity: 1,
+                color: 'rgba(119,61,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(152,78,163,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_TGL_Rencana_Teloyo_3');
+        map.getPane('pane_TGL_Rencana_Teloyo_3').style.zIndex = 403;
+        map.getPane('pane_TGL_Rencana_Teloyo_3').style['mix-blend-mode'] = 'normal';
+        var layer_TGL_Rencana_Teloyo_3 = new L.geoJson(json_TGL_Rencana_Teloyo_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_TGL_Rencana_Teloyo_3',
+            layerName: 'layer_TGL_Rencana_Teloyo_3',
+            pane: 'pane_TGL_Rencana_Teloyo_3',
+            onEachFeature: pop_TGL_Rencana_Teloyo_3,
+            style: style_TGL_Rencana_Teloyo_3_0,
+        });
+        bounds_group.addLayer(layer_TGL_Rencana_Teloyo_3);
+        map.addLayer(layer_TGL_Rencana_Teloyo_3);
+        function pop_TGLTegalgondo_4(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">DESA</th>\
+                        <td>' + (feature.properties['DESA'] !== null ? Autolinker.link(feature.properties['DESA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">EXISTING</th>\
+                        <td>' + (feature.properties['EXISTING'] !== null ? Autolinker.link(feature.properties['EXISTING'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">RENCANA</th>\
+                        <td>' + (feature.properties['RENCANA'] !== null ? Autolinker.link(feature.properties['RENCANA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">AREA</th>\
+                        <td>' + (feature.properties['AREA'] !== null ? Autolinker.link(feature.properties['AREA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_TGLTegalgondo_4_0(feature) {
+            switch(String(feature.properties['EXISTING'])) {
+                case 'INDUSTRI':
+                    return {
+                pane: 'pane_TGLTegalgondo_4',
+                opacity: 1,
+                color: 'rgba(82,82,82,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(204,204,204,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'LAPANGAN':
+                    return {
+                pane: 'pane_TGLTegalgondo_4',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(148,209,128,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'MAKAM':
+                    return {
+                pane: 'pane_TGLTegalgondo_4',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(148,209,128,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'PERMUKIMAN':
+                    return {
+                pane: 'pane_TGLTegalgondo_4',
+                opacity: 1,
+                color: 'rgba(247,225,55,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,51,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SAWAH IRIGASI':
+                    return {
+                pane: 'pane_TGLTegalgondo_4',
+                opacity: 1,
+                color: 'rgba(56,128,54,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(77,175,74,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SAWAH TADAH HUJAN.':
+                    return {
+                pane: 'pane_TGLTegalgondo_4',
+                opacity: 1,
+                color: 'rgba(21,14,166,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(77,175,74,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'TEGALAN':
+                    return {
+                pane: 'pane_TGLTegalgondo_4',
+                opacity: 1,
+                color: 'rgba(247,225,55,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,51,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_TGLTegalgondo_4');
+        map.getPane('pane_TGLTegalgondo_4').style.zIndex = 404;
+        map.getPane('pane_TGLTegalgondo_4').style['mix-blend-mode'] = 'normal';
+        var layer_TGLTegalgondo_4 = new L.geoJson(json_TGLTegalgondo_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_TGLTegalgondo_4',
+            layerName: 'layer_TGLTegalgondo_4',
+            pane: 'pane_TGLTegalgondo_4',
+            onEachFeature: pop_TGLTegalgondo_4,
+            style: style_TGLTegalgondo_4_0,
+        });
+        bounds_group.addLayer(layer_TGLTegalgondo_4);
+        map.addLayer(layer_TGLTegalgondo_4);
+        function pop_TGLTegalgondoRencana_5(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">TGL_New</th>\
+                        <td>' + (feature.properties['TGL_New'] !== null ? Autolinker.link(feature.properties['TGL_New'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_TGLTegalgondoRencana_5_0(feature) {
+            switch(String(feature.properties['TGL_New'])) {
+                case 'Pendidikan':
+                    return {
+                pane: 'pane_TGLTegalgondoRencana_5',
+                opacity: 1,
+                color: 'rgba(38,89,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(55,126,184,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Permukiman':
+                    return {
+                pane: 'pane_TGLTegalgondoRencana_5',
+                opacity: 1,
+                color: 'rgba(247,225,55,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,51,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_TGLTegalgondoRencana_5');
+        map.getPane('pane_TGLTegalgondoRencana_5').style.zIndex = 405;
+        map.getPane('pane_TGLTegalgondoRencana_5').style['mix-blend-mode'] = 'normal';
+        var layer_TGLTegalgondoRencana_5 = new L.geoJson(json_TGLTegalgondoRencana_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_TGLTegalgondoRencana_5',
+            layerName: 'layer_TGLTegalgondoRencana_5',
+            pane: 'pane_TGLTegalgondoRencana_5',
+            onEachFeature: pop_TGLTegalgondoRencana_5,
+            style: style_TGLTegalgondoRencana_5_0,
+        });
+        bounds_group.addLayer(layer_TGLTegalgondoRencana_5);
+        map.addLayer(layer_TGLTegalgondoRencana_5);
+        function pop_PusatPelayananLingkungan_6(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">id</th>\
+                        <td>' + (feature.properties['id'] !== null ? Autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Desa</th>\
+                        <td>' + (feature.properties['Desa'] !== null ? Autolinker.link(feature.properties['Desa'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_PusatPelayananLingkungan_6_0() {
+            return {
+                pane: 'pane_PusatPelayananLingkungan_6',
+                radius: 20.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(169,2,2,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_PusatPelayananLingkungan_6');
+        map.getPane('pane_PusatPelayananLingkungan_6').style.zIndex = 406;
+        map.getPane('pane_PusatPelayananLingkungan_6').style['mix-blend-mode'] = 'normal';
+        var layer_PusatPelayananLingkungan_6 = new L.geoJson(json_PusatPelayananLingkungan_6, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_PusatPelayananLingkungan_6',
+            layerName: 'layer_PusatPelayananLingkungan_6',
+            pane: 'pane_PusatPelayananLingkungan_6',
+            onEachFeature: pop_PusatPelayananLingkungan_6,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_PusatPelayananLingkungan_6_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_PusatPelayananLingkungan_6);
+        map.addLayer(layer_PusatPelayananLingkungan_6);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/PusatPelayananLingkungan_6.png" /> Pusat Pelayanan Lingkungan': layer_PusatPelayananLingkungan_6,'TGL Tegalgondo Rencana<br /><table><tr><td style="text-align: center;"><img src="legend/TGLTegalgondoRencana_5_Pendidikan0.png" /></td><td>Pendidikan</td></tr><tr><td style="text-align: center;"><img src="legend/TGLTegalgondoRencana_5_Permukiman1.png" /></td><td>Permukiman</td></tr></table>': layer_TGLTegalgondoRencana_5,'TGL Tegalgondo<br /><table><tr><td style="text-align: center;"><img src="legend/TGLTegalgondo_4_INDUSTRI0.png" /></td><td>INDUSTRI</td></tr><tr><td style="text-align: center;"><img src="legend/TGLTegalgondo_4_LAPANGAN1.png" /></td><td>LAPANGAN</td></tr><tr><td style="text-align: center;"><img src="legend/TGLTegalgondo_4_MAKAM2.png" /></td><td>MAKAM</td></tr><tr><td style="text-align: center;"><img src="legend/TGLTegalgondo_4_PERMUKIMAN3.png" /></td><td>PERMUKIMAN</td></tr><tr><td style="text-align: center;"><img src="legend/TGLTegalgondo_4_SAWAHIRIGASI4.png" /></td><td>SAWAH IRIGASI</td></tr><tr><td style="text-align: center;"><img src="legend/TGLTegalgondo_4_SAWAHTADAHHUJAN5.png" /></td><td>SAWAH TADAH HUJAN.</td></tr><tr><td style="text-align: center;"><img src="legend/TGLTegalgondo_4_TEGALAN6.png" /></td><td>TEGALAN</td></tr></table>': layer_TGLTegalgondo_4,'TGL_Rencana_Teloyo<br /><table><tr><td style="text-align: center;"><img src="legend/TGL_Rencana_Teloyo_3_Ibadat0.png" /></td><td>Ibadat</td></tr><tr><td style="text-align: center;"><img src="legend/TGL_Rencana_Teloyo_3_Industri1.png" /></td><td>Industri</td></tr><tr><td style="text-align: center;"><img src="legend/TGL_Rencana_Teloyo_3_Pasar2.png" /></td><td>Pasar</td></tr><tr><td style="text-align: center;"><img src="legend/TGL_Rencana_Teloyo_3_Pendidikan3.png" /></td><td>Pendidikan</td></tr><tr><td style="text-align: center;"><img src="legend/TGL_Rencana_Teloyo_3_Perdagangan4.png" /></td><td>Perdagangan</td></tr><tr><td style="text-align: center;"><img src="legend/TGL_Rencana_Teloyo_3_Perkim5.png" /></td><td>Perkim</td></tr><tr><td style="text-align: center;"><img src="legend/TGL_Rencana_Teloyo_3_puskesmas6.png" /></td><td>puskesmas</td></tr><tr><td style="text-align: center;"><img src="legend/TGL_Rencana_Teloyo_3_shelter7.png" /></td><td>shelter</td></tr><tr><td style="text-align: center;"><img src="legend/TGL_Rencana_Teloyo_3_Taman8.png" /></td><td>Taman</td></tr><tr><td style="text-align: center;"><img src="legend/TGL_Rencana_Teloyo_3_terminal9.png" /></td><td>terminal</td></tr></table>': layer_TGL_Rencana_Teloyo_3,'TGL_Teloyo<br /><table><tr><td style="text-align: center;"><img src="legend/TGL_Teloyo_2_INDUSTRI0.png" /></td><td>INDUSTRI</td></tr><tr><td style="text-align: center;"><img src="legend/TGL_Teloyo_2_PERMUKIMAN1.png" /></td><td>PERMUKIMAN</td></tr><tr><td style="text-align: center;"><img src="legend/TGL_Teloyo_2_PERTANIANTANAMANPANGAN2.png" /></td><td>PERTANIAN TANAMAN PANGAN</td></tr><tr><td style="text-align: center;"><img src="legend/TGL_Teloyo_2_RTH3.png" /></td><td>RTH</td></tr><tr><td style="text-align: center;"><img src="legend/TGL_Teloyo_2_SEMPADANSUNGAI4.png" /></td><td>SEMPADAN SUNGAI</td></tr></table>': layer_TGL_Teloyo_2,'Pola Ruang Wonosari<br /><table><tr><td style="text-align: center;"><img src="legend/PolaRuangWonosari_1_Gardu0.png" /></td><td>Gardu</td></tr><tr><td style="text-align: center;"><img src="legend/PolaRuangWonosari_1_INDUSTRI1.png" /></td><td>INDUSTRI</td></tr><tr><td style="text-align: center;"><img src="legend/PolaRuangWonosari_1_KORAMIL2.png" /></td><td>KORAMIL</td></tr><tr><td style="text-align: center;"><img src="legend/PolaRuangWonosari_1_LAPANGAN3.png" /></td><td>LAPANGAN</td></tr><tr><td style="text-align: center;"><img src="legend/PolaRuangWonosari_1_MAKAM4.png" /></td><td>MAKAM</td></tr><tr><td style="text-align: center;"><img src="legend/PolaRuangWonosari_1_PERDAGANGAN5.png" /></td><td>PERDAGANGAN</td></tr><tr><td style="text-align: center;"><img src="legend/PolaRuangWonosari_1_PERMUKIMAN6.png" /></td><td>PERMUKIMAN</td></tr><tr><td style="text-align: center;"><img src="legend/PolaRuangWonosari_1_POLSEK7.png" /></td><td>POLSEK</td></tr><tr><td style="text-align: center;"><img src="legend/PolaRuangWonosari_1_RTH8.png" /></td><td>RTH</td></tr><tr><td style="text-align: center;"><img src="legend/PolaRuangWonosari_1_SAWAHIRIGASI9.png" /></td><td>SAWAH IRIGASI</td></tr><tr><td style="text-align: center;"><img src="legend/PolaRuangWonosari_1_SAWAHTADAHHUJAN10.png" /></td><td>SAWAH TADAH HUJAN.</td></tr><tr><td style="text-align: center;"><img src="legend/PolaRuangWonosari_1_SEMPADANSUNGAI11.png" /></td><td>SEMPADAN SUNGAI</td></tr><tr><td style="text-align: center;"><img src="legend/PolaRuangWonosari_1_TEGALAN12.png" /></td><td>TEGALAN</td></tr></table>': layer_PolaRuangWonosari_1,"WebGIS": layer_WebGIS_0,}).addTo(map);
+        setBounds();
+        </script>
+    </body>
+</html>
